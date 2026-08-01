@@ -3,10 +3,10 @@ import tkinter as tk
 from tkinter import ttk
 
 # ---------------------------------------------------------------- palette
-ACCENT      = "#0F9488"
-ACCENT_DIM  = "#E3F5F2"
-ACCENT_DEEP = "#0B6E64"
-BG          = "#F4FBFA"
+ACCENT      = "#3E54D3"
+ACCENT_DIM  = "#E8EAFA"
+ACCENT_DEEP = "#2E3FA8"
+BG          = "#EFF7F2"
 CARD        = "#FFFFFF"
 INK         = "#132523"
 MUTED       = "#6F8B87"
@@ -154,7 +154,7 @@ class EmployeesPage(tk.Frame):
         self.f_desig = LabeledEntry(grid, "Designation")
         self.f_desig.grid(row=0, column=2, sticky="ew", padx=(10, 0), pady=6)
 
-        self.f_basic = LabeledEntry(grid, "Basic salary (\u20B9)")
+        self.f_basic = LabeledEntry(grid, "BS(\u20B9)")
         self.f_basic.grid(row=1, column=0, sticky="ew", padx=(0, 10), pady=6)
         self.f_hra = LabeledEntry(grid, "HRA (\u20B9)")
         self.f_hra.grid(row=1, column=1, sticky="ew", padx=10, pady=6)
