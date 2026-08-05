@@ -658,8 +658,8 @@ class PayrollApp(tk.Tk):
 
         self.nav_buttons = {}
         for key, label in (("PAYROLL", "Run Payroll"),
-                           ("payslip", "Payslip"),
-                           ("reports", "Reports")):
+                           ("PAYSLIP", "Payslip"),
+                           ("REPORTS", "Reports")):
             b = tk.Button(self.sidebar, text=label, anchor="w", bg=CARD, fg=MUTED, font=FONT,
                           relief="flat", bd=0, padx=14, pady=10, activebackground=ACCENT_DIM,
                           activeforeground=ACCENT_DEEP, cursor="hand2",
