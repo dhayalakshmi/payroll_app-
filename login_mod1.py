@@ -463,7 +463,7 @@ PAGE_HTML = r"""<!DOCTYPE html>
 
           <div class="field">
             <label for="Name">Full name</label>
-            <input type="text" id="Name" placeholder="Gopika S">
+            <input type="text" id="Name" placeholder="GopikaS">
           </div>
           <div class="field">
             <label for="regEmail">Work email</label>
