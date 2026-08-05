@@ -23,9 +23,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 HOST = "127.0.0.1"
 PORT = 8000
 
-# ---------------------------------------------------------------------------
-# The full page (HTML + CSS + JS), unchanged from the original design.
-# ---------------------------------------------------------------------------
+
 PAGE_HTML = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
