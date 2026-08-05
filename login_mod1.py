@@ -2,7 +2,7 @@
 Payroll System — Module 1 (Registration & Authentication)
 Pure Python implementation.
 
-This script does NOT use any external framework (no Flask, no Django).
+This script sssssssss NOT use any external framework (no Flask, no Django).
 It uses only Python's built-in `http.server` module to run a tiny web
 server. The exact same HTML/CSS/JavaScript from the original page is
 kept inside this Python file as a string and served as-is, so opening
@@ -23,9 +23,6 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 HOST = "127.0.0.1"
 PORT = 8000
 
-# ---------------------------------------------------------------------------
-# The full page (HTML + CSS + JS), unchanged from the original design.
-# ---------------------------------------------------------------------------
 PAGE_HTML = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -448,8 +445,8 @@ PAGE_HTML = r"""<!DOCTYPE html>
             <input type="email" id="loginEmail" placeholder="you@company.com">
           </div>
           <div class="field">
-            <label for="loginPassword">Password</label>
-            <input type="password" id="loginPassword" placeholder="••••••••">
+            <label for="LoginPassword">Password</label>
+            <input type="password" id="LoginPassword" placeholder="••••••••">
           </div>
 
           <button class="submit-btn" onclick="handleLogin()">Log in</button>
@@ -465,12 +462,12 @@ PAGE_HTML = r"""<!DOCTYPE html>
           <div class="msg" id="registerMsg"></div>
 
           <div class="field">
-            <label for="regName">Full name</label>
-            <input type="text" id="regName" placeholder="Dhaya Lakshmi A">
+            <label for="Name">Full name</label>
+            <input type="text" id="Name" placeholder="Gopika S">
           </div>
           <div class="field">
             <label for="regEmail">Work email</label>
-            <input type="email" id="regEmail" placeholder="you@company.com">
+            <input type="email" id="regEmail" placeholder="gopika.s@gdr.com">
           </div>
           <div class="field">
             <label for="regPassword">Password</label>
