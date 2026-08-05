@@ -326,12 +326,11 @@ class PayrollPage(tk.Frame):
         self.stat_net.set(format_inr(total_net))
 
 
-# ---------------------------------------------------------------- UC-07: Payslip
 class PayslipPage(tk.Frame):
     def __init__(self, parent, app):
         super().__init__(parent, bg=BG)
         self.app = app
-        self.current = None  # currently displayed payslip data, for Print / Save as PDF
+        self.current = None 
 
         head = tk.Frame(self, bg=BG)
         head.pack(fill="x", padx=32, pady=(28, 18))
@@ -606,9 +605,9 @@ class ReportsPage(tk.Frame):
         for col, h in zip(("emp", "date", "status"), ("Employee", "Date", "Status")):
             att_tree.heading(col, text=h)
             att_tree.column(col, width=150)
-        att_tree.tag_configure("Present", foreground=GREEN)
-        att_tree.tag_configure("Absent", foreground=RED)
-        att_tree.tag_configure("OnLeave", foreground=AMBER)
+        att_tree.tag_configure("PRESENT", foreground=GREEN)
+        att_tree.tag_configure("ABSENT", foreground=RED)
+        att_tree.tag_configure("ONLEAVE", foreground=AMBER)
         for a in relevant_att:
             tag = a["status"].replace(" ", "")
             att_tree.insert("", "end", values=(a["emp"], a["date"], a["status"]), tags=(tag,))
@@ -658,7 +657,7 @@ class PayrollApp(tk.Tk):
         tk.Label(brand, text="Payroll System", bg=CARD, fg=INK, font=FONT_BOLD).pack(side="left", padx=10)
 
         self.nav_buttons = {}
-        for key, label in (("payroll", "Run Payroll"),
+        for key, label in (("PAYROLL", "Run Payroll"),
                            ("payslip", "Payslip"),
                            ("reports", "Reports")):
             b = tk.Button(self.sidebar, text=label, anchor="w", bg=CARD, fg=MUTED, font=FONT,
@@ -672,9 +671,9 @@ class PayrollApp(tk.Tk):
         self.main = tk.Frame(self, bg=BG)
         self.main.pack(side="left", fill="both", expand=True)
         self.pages = {
-            "payroll": PayrollPage(self.main, self),
-            "payslip": PayslipPage(self.main, self),
-            "reports": ReportsPage(self.main, self),
+            "PAYROLL": PayrollPage(self.main, self),
+            "PAYSLIP": PayslipPage(self.main, self),
+            "REPORTS": ReportsPage(self.main, self),
         }
         for page in self.pages.values():
             page.place(relx=0, rely=0, relwidth=1, relheight=1)
