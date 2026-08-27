@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <h1>Leave requests</h1>
+  <p>Submit a leave request with type and date range, then review and decide on pending requests.</p>
+</div>
+
+<div class="card">
+  <h3>Submit leave request</h3>
+  <form method="POST" action="{{ url_for('add_leave') }}" class="grid grid-4">
+    <label>Employee
+      <select name="emp">
+        <option value="">Select\u2026</option>
+        {% for n in emp_names %}<option>{{ n }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Leave type
+      <select name="type">
+        <option>Casual Leave</option>
+        <option>Sick Leave</option>
+        <option>Earned Leave</option>
+      </select>
+    </label>
+    <label>From date
+      <input type="date" name="from">
+    </label>
+    <label>To date
+      <input type="date" name="to">
+    </label>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Submit request</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Review requests</h3>
+  {% if requests %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Employee</th><th>Leave type</th><th>From</th><th>To</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for r in requests %}
+        <tr>
+          <td>{{ r.emp }}</td>
+          <td>{{ r.type }}</td>
+          <td>{{ r.from }}</td>
+          <td>{{ r.to }}</td>
+          <td><span class="status-tag status-{{ r.status }}">{{ r.status }}</span></td>
+          <td class="row-actions">
+            {% if r.status == 'Pending' %}
+            <form method="POST" action="{{ url_for('decide_leave', req_id=r.id, decision='Approved') }}">
+              <button type="submit" class="btn btn-approve">Approve</button>
+            </form>
+            <form method="POST" action="{{ url_for('decide_leave', req_id=r.id, decision='Rejected') }}">
+              <button type="submit" class="btn btn-reject">Reject</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty">No leave requests yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

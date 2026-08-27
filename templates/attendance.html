@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <h1>Daily attendance</h1>
+  <p>Record the status \u2014 Present, Absent, or On Leave \u2014 for an employee on a given date.</p>
+</div>
+
+<div class="card">
+  <h3>Record attendance</h3>
+  <form method="POST" action="{{ url_for('add_attendance') }}" class="grid grid-3">
+    <label>Employee
+      <select name="emp">
+        <option value="">Select\u2026</option>
+        {% for n in emp_names %}<option>{{ n }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Date
+      <input type="date" name="date">
+    </label>
+    <label>Status
+      <select name="status">
+        <option>Present</option>
+        <option>Absent</option>
+        <option>On Leave</option>
+      </select>
+    </label>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Record attendance</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Attendance log</h3>
+  {% if log %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Employee</th><th>Date</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for a in log %}
+        <tr>
+          <td>{{ a.emp }}</td>
+          <td>{{ a.date }}</td>
+          <td><span class="status-tag status-{{ a.status.replace(' ', '') }}">{{ a.status }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty">No attendance recorded yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

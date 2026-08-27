@@ -1,0 +1,181 @@
+:root {
+  --accent: #3E54D3;
+  --accent-dim: #E8EAFA;
+  --accent-deep: #2E3FA8;
+  --bg: #EFF7F2;
+  --card: #FFFFFF;
+  --ink: #132523;
+  --muted: #6F8B87;
+  --line: #DCEFEC;
+  --green: #2E9D6B;
+  --green-soft: #E6F6EE;
+  --red: #DA4A4A;
+  --red-soft: #FCEAEA;
+  --amber: #C9891E;
+  --amber-soft: #FBF1DF;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.shell { display: flex; min-height: 100vh; }
+
+/* -------------------- sidebar -------------------- */
+.sidebar {
+  width: 230px;
+  flex-shrink: 0;
+  background: var(--card);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  padding: 22px 10px;
+}
+
+.brand { display: flex; align-items: center; padding: 0 6px 26px; }
+.brand-mark {
+  background: var(--accent);
+  color: #fff;
+  font-weight: bold;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+.brand-name { font-weight: bold; }
+
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav-link {
+  padding: 10px 14px;
+  border-radius: 6px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+}
+.nav-link:hover { background: var(--bg); }
+.nav-link.active { background: var(--accent-dim); color: var(--accent-deep); font-weight: bold; }
+
+.spacer { flex: 1; }
+
+.stats { padding: 0 6px; }
+.stats hr { border: none; border-top: 1px solid var(--line); margin: 0 0 10px; }
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 3px 0;
+}
+.stat-row strong { color: var(--ink); font-size: 12px; }
+
+/* -------------------- main -------------------- */
+.main { flex: 1; padding: 28px 32px; max-width: 1000px; }
+
+.page-head h1 { font-size: 20px; margin: 0 0 6px; }
+.page-head p { color: var(--muted); font-size: 13px; margin: 0 0 22px; max-width: 620px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+}
+.card h3 { margin: 0 0 14px; font-size: 14px; }
+
+/* -------------------- forms -------------------- */
+.grid { display: grid; gap: 14px; align-items: end; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.grid input, .grid select {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--ink);
+}
+.grid input:focus, .grid select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-actions { display: flex; align-items: flex-end; }
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-deep); }
+.btn-danger-outline { background: var(--card); color: var(--red); border: 1px solid var(--red-soft); }
+.btn-danger-outline:hover { background: var(--red-soft); }
+.btn-approve { background: var(--green); color: #fff; margin-right: 6px; }
+.btn-approve:hover { opacity: 0.9; }
+.btn-reject { background: var(--red); color: #fff; }
+.btn-reject:hover { opacity: 0.9; }
+
+/* -------------------- tables -------------------- */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: normal;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+}
+td { padding: 9px 10px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: none; }
+.row-actions { display: flex; gap: 6px; }
+.row-actions form { display: inline; margin: 0; }
+
+.empty { color: var(--muted); font-size: 13px; padding: 10px 0; }
+
+/* -------------------- status tags -------------------- */
+.status-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.status-Present, .status-Approved { background: var(--green-soft); color: var(--green); }
+.status-Absent, .status-Rejected { background: var(--red-soft); color: var(--red); }
+.status-OnLeave, .status-Pending { background: var(--amber-soft); color: var(--amber); }
+
+/* -------------------- inline flash messages -------------------- */
+.inline-msg {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.inline-msg.success { background: var(--green-soft); color: var(--green); }
+.inline-msg.error { background: var(--red-soft); color: var(--red); }
