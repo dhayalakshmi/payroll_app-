@@ -2,7 +2,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-# ---------------------------------------------------------------- palette
 ACCENT      = "#3E54D3"
 ACCENT_DIM  = "#E8EAFA"
 ACCENT_DEEP = "#2E3FA8"
@@ -197,7 +196,7 @@ class EmployeesPage(tk.Frame):
         allow = self.f_allow.get() or "0"
 
         if not name or not dept or not desig or basic == "":
-            self.msg.show("Please fill in name, department, designation, and basic salary.", "error")
+            self.msg.show("fill in name, department, designation, and basic salary.", "error")
             return
         try:
             basic_v, hra_v, allow_v = float(basic), float(hra), float(allow)
