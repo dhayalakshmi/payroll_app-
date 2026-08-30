@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payroll System — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#123531;
+    --ink-soft:#1B4C46;
+    --paper:#F5FAF9;
+    --paper-dim:#EAF5F3;
+    --ledger:#14807A;
+    --ledger-dim:#0E655F;
+    --gold:#14807A;
+    --gold-soft:#0E655F;
+    --rust:#B3441E;
+    --line:#D9EBE8;
+    --ink-line: rgba(20,128,122,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:'IBM Plex Sans', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .screen{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns: 1.05fr 1fr;
+  }
+  @media (max-width: 860px){
+    .screen{ grid-template-columns: 1fr; }
+    .brand{ min-height:220px; }
+  }
+
+  /* ===== LEFT: brand / illustration panel ===== */
+  .brand{
+    background: linear-gradient(180deg, #ffffff 0%, #eef8f7 55%, #dff3f1 100%);
+    color:var(--ink);
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    padding:40px 48px;
+    overflow:hidden;
+  }
+  .brand::after{
+    content:"";
+    position:absolute;
+    top:50%; left:50%;
+    width:420px; height:420px;
+    background: radial-gradient(circle, rgba(20,128,122,0.14) 0%, rgba(20,128,122,0) 70%);
+    border-radius:50%;
+    transform: translate(-50%,-50%);
+    z-index:0;
+  }
+  .brand-mark{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    position:relative;
+    z-index:2;
+  }
+  .brand-mark .glyph{
+    width:30px; height:30px;
+    background:var(--ledger);
+    border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:15px;
+    color:#fff;
+    flex-shrink:0;
+  }
+  .brand-mark .name{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ledger);
+    font-weight:600;
+  }
+  .brand-copy{
+    position:relative;
+    z-index:2;
+    max-width:420px;
+    margin:0 auto;
+    text-align:center;
+    display:flex;
+    flex:1;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  .brand-illustration{
+    width:180px;
+    height:180px;
+    margin-bottom:22px;
+  }
+  .brand-copy h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(24px, 3vw, 30px);
+    line-height:1.15;
+    margin:0 0 14px;
+    letter-spacing:0.01em;
+    color:var(--ink);
+    text-transform:uppercase;
+  }
+  .brand-copy h1 em{
+    font-style:normal;
+    color:var(--ledger);
+  }
+  .brand-copy .dots{
+    width:60px;
+    height:1px;
+    border-top:2px dotted rgba(20,128,122,0.4);
+    margin:0 0 16px;
+  }
+  .brand-copy p{
+    font-size:14.5px;
+    line-height:1.6;
+    color:#4A5C59;
+    margin:0;
+  }
+
+  /* ===== RIGHT: form panel ===== */
+  .stage{
+    background:var(--paper);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 28px;
+  }
+  .stub{
+    width:100%;
+    max-width:420px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:2px;
+    position:relative;
+    box-shadow: 0 1px 2px rgba(28,35,33,0.04), 0 12px 32px rgba(28,35,33,0.07);
+  }
+  /* perforated edge accent */
+  .stub::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:6px;
+    background-image: radial-gradient(circle, var(--paper) 2.1px, transparent 2.2px);
+    background-size: 6px 12px;
+    background-position: -1px 6px;
+  }
+
+  .tabs{
+    display:flex;
+    border-bottom:1px solid var(--line);
+    margin-left:6px;
+  }
+  .tab{
+    flex:1;
+    text-align:center;
+    padding:18px 12px 15px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:#8A8578;
+    cursor:pointer;
+    background:none;
+    border:none;
+    position:relative;
+    transition:color .15s ease;
+  }
+  .tab.active{ color:var(--ink); }
+  .tab.active::after{
+    content:"";
+    position:absolute;
+    left:14px; right:14px; bottom:-1px;
+    height:2px;
+    background:var(--ledger);
+  }
+
+  .panel{ padding:34px 34px 30px; margin-left:6px; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 8px;
+  }
+  .panel h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:25px;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  .panel .sub{
+    font-size:13.5px;
+    color:#6B6759;
+    margin:0 0 26px;
+    line-height:1.5;
+  }
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block;
+    font-size:11.5px;
+    font-weight:500;
+    letter-spacing:0.03em;
+    color:#4A4740;
+    margin-bottom:6px;
+  }
+  .field input, .field select{
+    width:100%;
+    padding:11px 12px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    background:var(--paper-dim);
+    border:1px solid var(--line);
+    border-radius:2px;
+    outline:none;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .field select{ cursor:pointer; appearance:none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B6759'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position: right 14px center;
+  }
+  .field input:focus, .field select:focus{
+    border-color:var(--ledger);
+    background:#fff;
+    box-shadow: 0 0 0 3px rgba(31,111,92,0.12);
+  }
+  .field input::placeholder{ color:#A5A192; }
+  .hint{ font-size:11.5px; color:#8A8578; margin-top:5px; }
+
+  .submit-btn{
+    width:100%;
+    padding:13px;
+    margin-top:6px;
+    background:var(--ledger);
+    color:#F7F5F0;
+    border:none;
+    border-radius:2px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    cursor:pointer;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .submit-btn:hover{ background:var(--ledger-dim); }
+  .submit-btn:active{ transform: translateY(1px); }
+
+  .msg{
+    display:none;
+    font-size:12.5px;
+    padding:10px 12px;
+    border-radius:2px;
+    margin-bottom:16px;
+    line-height:1.5;
+  }
+  .msg.error{
+    display:block;
+    background:#FBEBE4;
+    color:var(--rust);
+    border:1px solid #EBC7B4;
+  }
+  .msg.success{
+    display:block;
+    background:#E7F1EE;
+    color:var(--ledger-dim);
+    border:1px solid #BFDBD2;
+  }
+
+  .form-view{ display:none; }
+  .form-view.active{ display:block; }
+
+  .foot-note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:#A5A192;
+    text-align:center;
+    margin-top:18px;
+    letter-spacing:0.04em;
+  }
+
+  /* ===== Dashboard redirect stub ===== */
+  .dash{
+    display:none;
+    min-height:100vh;
+    background:var(--paper);
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    padding:40px;
+  }
+  .dash.active{ display:flex; }
+  .dash .stamp{
+    width:64px; height:64px;
+    border:1.5px solid var(--ledger);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:22px;
+    color:var(--ledger);
+    font-size:28px;
+    font-family:'Fraunces', serif;
+  }
+  .dash h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:28px;
+    margin:0 0 8px;
+    color:var(--ink);
+  }
+  .dash p{
+    color:#6B6759;
+    font-size:14px;
+    max-width:380px;
+    line-height:1.6;
+    margin:0 0 6px;
+  }
+  .dash .role-chip{
+    display:inline-block;
+    margin-top:14px;
+    padding:6px 14px;
+    background:var(--ledger);
+    color:#ffffff;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    border-radius:2px;
+  }
+  .dash .signout{
+    margin-top:28px;
+    background:none;
+    border:1px solid var(--line);
+    color:#6B6759;
+    padding:9px 18px;
+    font-size:12.5px;
+    border-radius:2px;
+    cursor:pointer;
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .dash .signout:hover{ border-color:var(--ledger); color:var(--ledger-dim); }
+</style>
+</head>
+<body>
+
+<div class="screen" id="authScreen">
+  <div class="brand">
+    <div class="brand-mark">
+      <div class="glyph">P</div>
+      <div class="name">Payroll System</div>
+    </div>
+    <div class="brand-copy">
+      <svg class="brand-illustration" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="92" fill="rgba(20,128,122,0.08)"/>
+        <g>
+          <rect x="55" y="42" width="70" height="92" rx="6" fill="#ffffff" stroke="#14807A" stroke-width="3"/>
+          <path d="M105 42 L125 62 L105 62 Z" fill="#14807A"/>
+          <line x1="67" y1="76" x2="112" y2="76" stroke="#14807A" stroke-width="3" stroke-linecap="round"/>
+          <line x1="67" y1="88" x2="112" y2="88" stroke="#14807A" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="80" cy="112" r="17" fill="#ffffff" stroke="#14807A" stroke-width="3"/>
+          <text x="80" y="118" font-family="IBM Plex Sans, sans-serif" font-size="16" font-weight="700" fill="#14807A" text-anchor="middle">$</text>
+          <rect x="108" y="100" width="42" height="52" rx="5" fill="#ffffff" stroke="#14807A" stroke-width="3"/>
+          <rect x="115" y="107" width="28" height="10" rx="1.5" fill="#14807A"/>
+          <circle cx="119" cy="127" r="2.6" fill="#14807A"/>
+          <circle cx="129" cy="127" r="2.6" fill="#14807A"/>
+          <circle cx="139" cy="127" r="2.6" fill="#14807A"/>
+          <circle cx="119" cy="136" r="2.6" fill="#14807A"/>
+          <circle cx="129" cy="136" r="2.6" fill="#14807A"/>
+          <circle cx="139" cy="136" r="2.6" fill="#14807A"/>
+          <circle cx="119" cy="145" r="2.6" fill="#14807A"/>
+          <circle cx="129" cy="145" r="2.6" fill="#14807A"/>
+          <circle cx="139" cy="145" r="2.6" fill="#14807A"/>
+        </g>
+        <g fill="#14807A" opacity="0.55">
+          <path d="M42 55 l3 0 0 -3 2 0 0 3 3 0 0 2 -3 0 0 3 -2 0 0 -3 -3 0 z"/>
+          <circle cx="150" cy="60" r="2.2"/>
+          <circle cx="38" cy="120" r="2"/>
+          <circle cx="158" cy="130" r="2.4"/>
+        </g>
+      </svg>
+      <h1>Payroll System</h1>
+      <div class="dots"></div>
+      <p>One record. Every payslip, accounted for.</p>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stub">
+      <div class="tabs">
+        <button class="tab active" id="tabLogin" onclick="switchTab('login')">Log In</button>
+        <button class="tab" id="tabRegister" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <div class="panel">
+        <!-- LOGIN VIEW (UC-02) -->
+        <div class="form-view active" id="loginView">
+          <div class="eyebrow">Welcome back</div>
+          <h2>Log in to the system</h2>
+          <p class="sub">Enter your work email and password to reach your dashboard.</p>
+
+          <div class="msg" id="loginMsg"></div>
+
+          <div class="field">
+            <label for="loginEmail">Work email</label>
+            <input type="email" id="loginEmail" placeholder="you@company.com">
+          </div>
+          <div class="field">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••">
+          </div>
+
+          <button class="submit-btn" onclick="handleLogin()">Log in</button>
+          <div class="foot-note">No account yet? Use the Register tab above.</div>
+        </div>
+
+        <!-- REGISTER VIEW (UC-01) -->
+        <div class="form-view" id="registerView">
+          <div class="eyebrow">New account</div>
+          <h2>Register a new user</h2>
+          <p class="sub">Create an account to access the areas of the payroll system relevant to your role.</p>
+
+          <div class="msg" id="registerMsg"></div>
+
+          <div class="field">
+            <label for="regName">Full name</label>
+            <input type="text" id="regName" placeholder="Dhaya Lakshmi A">
+          </div>
+          <div class="field">
+            <label for="regEmail">Work email</label>
+            <input type="email" id="regEmail" placeholder="you@company.com">
+          </div>
+          <div class="field">
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" placeholder="At least 6 characters">
+            <div class="hint">Must be at least 6 characters long.</div>
+          </div>
+          <div class="field">
+            <label for="regRole">Role</label>
+            <select id="regRole">
+              <option value="">Select a role…</option>
+              <option value="Employee">Employee</option>
+              <option value="Administrator / HR">Administrator / HR</option>
+              <option value="Finance / Accounts">Finance / Accounts</option>
+            </select>
+          </div>
+
+          <button class="submit-btn" onclick="handleRegister()">Create account</button>
+          <div class="foot-note">Already registered? Use the Log In tab above.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD REDIRECT STUB -->
+<div class="dash" id="dashScreen">
+  <div class="stamp">✓</div>
+  <h1>Welcome, <span id="dashName">there</span></h1>
+  <p>You're signed in to the Payroll System dashboard. This is a placeholder screen — Modules 2 and 3 will build out Employee Management, Attendance, Leave, and Payroll Processing here.</p>
+  <div class="role-chip" id="dashRole">ROLE</div>
+  <button class="signout" onclick="signOut()">Sign out</button>
+</div>
+
+<script>
+  // ===== In-memory data store (no backend, resets on page reload) =====
+  let accounts = []; // { name, email, password, role }
+
+  function switchTab(view){
+    document.getElementById('tabLogin').classList.toggle('active', view === 'login');
+    document.getElementById('tabRegister').classList.toggle('active', view === 'register');
+    document.getElementById('loginView').classList.toggle('active', view === 'login');
+    document.getElementById('registerView').classList.toggle('active', view === 'register');
+    hideMsg('loginMsg');
+    hideMsg('registerMsg');
+  }
+
+  function showMsg(id, text, type){
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'msg ' + type;
+  }
+  function hideMsg(id){
+    const el = document.getElementById(id);
+    el.className = 'msg';
+    el.textContent = '';
+  }
+
+  function updateCounter(){
+    const el = document.getElementById('acctCounter');
+    if(el){
+      el.textContent = accounts.length + ' account' + (accounts.length === 1 ? '' : 's') + ' registered';
+    }
+  }
+
+  // ===== UC-01: Register a new user account =====
+  function handleRegister(){
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim().toLowerCase();
+    const password = document.getElementById('regPassword').value;
+    const role = document.getElementById('regRole').value;
+
+    if(!name || !email || !password || !role){
+      showMsg('registerMsg', 'Please fill in all fields before creating your account.', 'error');
+      return;
+    }
+    if(password.length < 6){
+      showMsg('registerMsg', 'Password must be at least 6 characters long.', 'error');
+      return;
+    }
+    const exists = accounts.some(a => a.email === email);
+    if(exists){
+      showMsg('registerMsg', 'An account with this email already exists.', 'error');
+      return;
+    }
+
+    accounts.push({ name, email, password, role });
+    updateCounter();
+    showMsg('registerMsg', 'Account created. Signing you in…', 'success');
+
+    setTimeout(() => goToDashboard({ name, role }), 700);
+  }
+
+  // ===== UC-02: Log in to the system =====
+  function handleLogin(){
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const password = document.getElementById('loginPassword').value;
+
+    const account = accounts.find(a => a.email === email && a.password === password);
+    if(!account){
+      showMsg('loginMsg', 'Email or password is incorrect.', 'error');
+      return;
+    }
+
+    showMsg('loginMsg', 'Welcome back. Redirecting…', 'success');
+    setTimeout(() => goToDashboard(account), 500);
+  }
+
+  function goToDashboard(user){
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('dashScreen').classList.add('active');
+    document.getElementById('dashName').textContent = user.name;
+    document.getElementById('dashRole').textContent = user.role;
+  }
+
+  function signOut(){
+    document.getElementById('dashScreen').classList.remove('active');
+    document.getElementById('authScreen').style.display = 'grid';
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPassword').value = '';
+    switchTab('login');
+  }
+</script>
+
+</body>
+</html>
