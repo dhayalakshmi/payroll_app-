@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Run payroll processing</h1>
+<p class="subtitle">Select a pay period end date and run payroll for all employees using their configured salary structure (sample data).</p>
+
+<div class="card">
+  {% if message %}
+  <div class="message {{ message[0] }}">{{ message[1] }}</div>
+  {% endif %}
+  <form method="post">
+    <div class="form-row">
+      <div>
+        <label>Pay period end date (YYYY-MM-DD)</label>
+        <input type="text" name="period" value="{{ period }}" placeholder="2026-07-31">
+      </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Run Payroll</button>
+  </form>
+</div>
+
+{% if results %}
+<div class="stats-row">
+  <div class="stat-card accent">
+    <div class="label">TOTAL NET PAYOUT</div>
+    <div class="value">{{ total_net }}</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Payroll results</h3>
+  <table>
+    <tr>
+      <th>Employee ID</th><th>Employee Name</th><th>Gross Pay</th>
+      <th>PF</th><th>Professional Tax</th><th>Income Tax</th><th>Net Pay</th>
+    </tr>
+    {% for r in results %}
+    <tr>
+      <td>{{ r.id }}</td>
+      <td>{{ r.name }}</td>
+      <td>{{ format_inr(r.gross) }}</td>
+      <td>{{ format_inr(r.pf) }}</td>
+      <td>{{ format_inr(r.prof_tax) }}</td>
+      <td>{{ format_inr(r.income_tax) }}</td>
+      <td>{{ format_inr(r.net) }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% else %}
+<p class="empty-hint">Run payroll to see results here.</p>
+{% endif %}
+{% endblock %}

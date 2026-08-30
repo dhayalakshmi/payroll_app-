@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Payroll and workforce reports</h1>
+<p class="subtitle">Generate a summary report across payroll, department headcount, leave, and attendance (sample data).</p>
+
+<div class="card">
+  {% if message %}
+  <div class="message {{ message[0] }}">{{ message[1] }}</div>
+  {% endif %}
+  <form method="post">
+    <div class="form-row">
+      <div>
+        <label>Report type</label>
+        <select name="report_type">
+          <option>Payroll Summary</option>
+          <option>Workforce Summary</option>
+          <option>Leave & Attendance Summary</option>
+        </select>
+      </div>
+      <div>
+        <label>Department</label>
+        <select name="department">
+          {% for d in depts %}
+          <option value="{{ d }}">{{ d }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>Pay period (e.g. July 2026)</label>
+        <input type="text" name="period" placeholder="July 2026">
+      </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Generate Report</button>
+  </form>
+</div>
+
+{% if report %}
+<p class="empty-hint" style="padding:0 0 10px;">Report for {{ report.period }} &mdash; {{ report.dept_filter }}</p>
+
+<div class="stats-row">
+  <div class="stat-card"><div class="label">TOTAL GROSS PAYROLL</div><div class="value">{{ report.total_gross }}</div></div>
+  <div class="stat-card"><div class="label">TOTAL DEDUCTIONS</div><div class="value">{{ report.total_deduct }}</div></div>
+  <div class="stat-card accent"><div class="label">TOTAL NET PAYOUT</div><div class="value">{{ report.total_net }}</div></div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Department-wise employee count</h3>
+    <table>
+      <tr><th>Department</th><th>Employee count</th></tr>
+      {% for d, c in report.dept_counts.items() %}
+      <tr><td>{{ d }}</td><td>{{ c }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="card">
+    <h3>Leave summary</h3>
+    {% for label, val in report.leave_summary.items() %}
+    <div class="leave-row"><span>{{ label }}</span><span>{{ val }}</span></div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <h3>Attendance table</h3>
+  {% if report.attendance %}
+  <table>
+    <tr><th>Employee</th><th>Date</th><th>Status</th></tr>
+    {% for a in report.attendance %}
+    <tr>
+      <td>{{ a.emp }}</td><td>{{ a.date }}</td>
+      <td class="status-{{ a.status.replace(' ', '') }}">{{ a.status }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="empty-hint">No attendance records for this filter.</p>
+  {% endif %}
+</div>
+{% else %}
+<p class="empty-hint">Set your filters and generate a report to see it here.</p>
+{% endif %}
+{% endblock %}

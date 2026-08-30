@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Generate and view payslip</h1>
+<p class="subtitle">Pick an employee and a pay period to view their payslip (sample data).</p>
+
+<div class="card">
+  {% if message %}
+  <div class="message {{ message[0] }}">{{ message[1] }}</div>
+  {% endif %}
+  <form method="post">
+    <div class="form-row">
+      <div>
+        <label>Employee name</label>
+        <select name="employee">
+          <option value="">-- Select --</option>
+          {% for name in employees %}
+          <option value="{{ name }}" {{ 'selected' if current and current.emp.name==name else '' }}>{{ name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>Pay period (e.g. July 2026)</label>
+        <input type="text" name="period" value="{{ current.period if current else '' }}" placeholder="July 2026">
+      </div>
+    </div>
+    <button class="btn btn-primary" type="submit">View Payslip</button>
+  </form>
+</div>
+
+{% if current %}
+{% set emp = current.emp %}
+{% set r = current.r %}
+<div class="card">
+  <div class="payslip-head">
+    <div>
+      <div class="name">{{ emp.name }}</div>
+      <div class="meta">{{ emp.id }} &middot; {{ emp.desig }} &middot; {{ emp.dept }}</div>
+    </div>
+    <div class="payslip-badge">Period: {{ current.period }}</div>
+  </div>
+
+  <div class="ps-row"><span>Basic salary</span><span>{{ format_inr(emp.basic) }}</span></div>
+  <div class="ps-row"><span>HRA</span><span>{{ format_inr(emp.hra) }}</span></div>
+  <div class="ps-row"><span>Other allowances</span><span>{{ format_inr(emp.allow) }}</span></div>
+  <div class="ps-row"><span>Gross earnings</span><span>{{ format_inr(r.gross) }}</span></div>
+  <hr class="divider">
+  <div class="ps-row deduct"><span>Provident fund (12%)</span><span>&minus; {{ format_inr(r.pf) }}</span></div>
+  <div class="ps-row deduct"><span>Professional tax</span><span>&minus; {{ format_inr(r.prof_tax) }}</span></div>
+  <div class="ps-row deduct"><span>Income tax</span><span>&minus; {{ format_inr(r.income_tax) }}</span></div>
+  <div class="ps-row deduct"><span>Total deductions</span><span>&minus; {{ format_inr(current.total_deduct) }}</span></div>
+  <hr class="divider">
+
+  <div class="total-row">
+    <span class="label">Net Pay</span>
+    <span class="value">{{ format_inr(r.net) }}</span>
+  </div>
+</div>
+
+<a class="btn btn-secondary" href="{{ url_for('payslip_pdf', employee=emp.name, period=current.period) }}" target="_blank">Print</a>
+<a class="btn btn-primary" href="{{ url_for('payslip_pdf', employee=emp.name, period=current.period) }}">Save as PDF</a>
+{% else %}
+<p class="empty-hint">Select an employee above to view their payslip.</p>
+{% endif %}
+{% endblock %}

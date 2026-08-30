@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Payroll System</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">P</div>
+        <div class="brand-name">Payroll System</div>
+      </div>
+      <nav>
+        <a class="nav-link {{ 'active' if active=='payroll' else '' }}" href="{{ url_for('payroll') }}">Run Payroll</a>
+        <a class="nav-link {{ 'active' if active=='payslip' else '' }}" href="{{ url_for('payslip') }}">Payslip</a>
+        <a class="nav-link {{ 'active' if active=='reports' else '' }}" href="{{ url_for('reports') }}">Reports</a>
+      </nav>
+    </aside>
+    <main class="main">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>
