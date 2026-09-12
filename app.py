@@ -175,4 +175,4 @@ def decide_leave(req_id, decision):
 if __name__ == "__main__":
     # host 0.0.0.0 so it's reachable from outside the container/CI agent.
     # debug=False on purpose — this is meant to run unattended (e.g. Jenkins).
-    app.run(host="0.0.0.0", port=4000, debug=False)
+    app.run(host="0.0.0.0", port=5000, debug=False)
