@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'employee', url: 'https://github.com/dhayalakshmi/payroll_app-.git'
+                git branch: 'authentication', url: 'https://github.com/dhayalakshmi/payroll_app-.git'
             }
         }
         stage('Build') {
