@@ -25,7 +25,7 @@ pipeline {
             steps {
                 bat 'docker rm -f setF_container || exit 0'
                 bat 'docker run -d -p 5003:5000 --name setF_container payroll-flask:setF'
-                bat 'timeout /t 5 /nobreak > nul'
+                bat 'ping -n 6 127.0.0.1 > nul'
                 bat 'curl -f http://localhost:5003/ || (docker logs setF_container && exit 1)'
                 bat 'echo Application verified successfully - container is responding'
             }
