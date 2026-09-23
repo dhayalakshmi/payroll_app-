@@ -3,12 +3,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'python -m py_compile payrollM3.py'
+                bat 'py -m py_compile payrollM3.py'
             }
         }
         stage('Test') {
             steps {
-                bat 'python -c "import payrollM3; print(\'Test OK\')"'
+                bat 'py -c "import payrollM3; print(\'Test OK\')"'
             }
         }
         stage('Create Docker Image') {
