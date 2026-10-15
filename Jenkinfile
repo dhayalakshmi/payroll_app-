@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "dhayalakshmi04/payroll-app:latest"
+        DOCKER_IMAGE = "dhayalakshmi04/payroll-auth-app:latest"
     }
 
     stages {
@@ -21,7 +21,7 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-cred',
+                    credentialsId: 'dockerhub-creds',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
@@ -37,7 +37,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
                     bat 'kubectl apply -f deployment.yaml'
-                    bat 'kubectl rollout restart deployment/payroll-app'
+                    bat 'kubectl rollout restart deployment/payroll-auth-app'
                 }
             }
         }
