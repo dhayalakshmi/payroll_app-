@@ -14,14 +14,14 @@ HOW TO RUN
     python app.py
 
 Then open this URL in your browser:
-    http://127.0.0.1:8000
+    http://0.0.0.0:8000
 """
 
 from flask import Flask, render_template
 
 app = Flask(__name__)
 
-HOST = "127.0.0.1"
+HOST = "0.0.0.0"
 PORT = 8000
 
 
