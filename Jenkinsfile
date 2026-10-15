@@ -36,7 +36,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    bat 'kubectl apply -f deployment.yaml'
+                    bat 'kubectl apply -f deployment (1).yaml'
                     bat 'kubectl rollout restart deployment/payroll-reports-app'
                 }
             }
