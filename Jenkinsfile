@@ -1,31 +1,50 @@
 pipeline {
     agent any
+
+    environment {
+        DOCKER_IMAGE = "dhayalakshmi04/payroll-reports-app:latest"
+    }
+
     stages {
-        stage('Build') {
+        stage('Clone Repository') {
             steps {
-                bat '"C:\\Users\\HP\\AppData\\Local\\Programs\\Python\\Python314\\python.exe" -m pip install -r requirements.txt'
-                bat '"C:\\Users\\HP\\AppData\\Local\\Programs\\Python\\Python314\\python.exe" -m py_compile app.py'
+                checkout scm
             }
         }
-        stage('Test') {
+
+        stage('Build Docker Image') {
             steps {
-                bat '"C:\\Users\\HP\\AppData\\Local\\Programs\\Python\\Python314\\python.exe" -c "import app; print(\'Test OK\')"'
+                bat "docker build -t %DOCKER_IMAGE% ."
             }
         }
-        stage('Create Docker Image') {
+
+        stage('Push to DockerHub') {
             steps {
-                bat '"C:\\Users\\HP\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" build -t flask-payroll-app .'
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat """
+                    echo %DOCKER_PASS%| docker login -u %DOCKER_USER% --password-stdin
+                    docker push %DOCKER_IMAGE%
+                    """
+                }
             }
         }
-        stage('Start and Stop Container') {
+
+        stage('Deploy to Kubernetes') {
             steps {
-                bat '"C:\\Users\\HP\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" rm -f payroll-container || exit 0'
-                bat '"C:\\Users\\HP\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" run -d -p 8000:8000 --name payroll-container flask-payroll-app'
-                bat '"C:\\Users\\HP\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" ps'
-                bat 'ping 127.0.0.1 -n 11 > nul'
-                bat '"C:\\Users\\HP\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" stop payroll-container'
-                bat '"C:\\Users\\HP\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" rm -f payroll-container'
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    bat 'kubectl apply -f deployment.yaml'
+                    bat 'kubectl rollout restart deployment/payroll-reports-app'
+                }
             }
         }
+    }
+
+    post {
+        success { echo 'CI/CD Pipeline executed successfully!' }
+        failure { echo 'Pipeline failed. Please check logs.' }
     }
 }
