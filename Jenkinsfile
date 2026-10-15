@@ -1,22 +1,48 @@
 pipeline {
     agent any
+
+    environment {
+        DOCKER_IMAGE = "dhayalakshmi04/payroll-app:latest"
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                git branch: 'employee', url: 'https://github.com/dhayalakshmi/payroll_app-.git'
+                checkout scm
             }
         }
-        stage('Build') {
+
+        stage('Build Docker Image') {
             steps {
-                bat 'python -m pip install -r requirements.txt'
+                bat "docker build -t %DOCKER_IMAGE% ."
             }
         }
-        stage('Docker Build') {
+
+        stage('Push to DockerHub') {
             steps {
-                bat 'docker build -t payroll-flask:setF .'
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat """
+                    echo %DOCKER_PASS%| docker login -u %DOCKER_USER% --password-stdin
+                    docker push %DOCKER_IMAGE%
+                    """
+                }
             }
         }
-        
-    
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                bat 'kubectl apply -f deployment.yaml'
+                bat 'kubectl rollout restart deployment/payroll-app'
+            }
+        }
+    }
+
+    post {
+        success { echo 'CI/CD Pipeline executed successfully!' }
+        failure { echo 'Pipeline failed. Please check logs.' }
     }
 }
