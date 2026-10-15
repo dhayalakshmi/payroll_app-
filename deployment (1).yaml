@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payroll-reports-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payroll-reports-app
+  template:
+    metadata:
+      labels:
+        app: payroll-reports-app
+    spec:
+      containers:
+        - name: payroll-reports-app
+          image: dhayalakshmi04/payroll-reports-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payroll-reports-service
+spec:
+  type: NodePort
+  selector:
+    app: payroll-reports-app
+  ports:
+    - port: 80
+      targetPort: 8000
+      nodePort: 30010
