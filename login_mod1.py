@@ -1,5 +1,5 @@
-"""
-Payroll System — Module 1 (Registration & Authentication)
+﻿"""
+Payroll System â€” Module 1 (Registration & Authentication)
 Pure Python implementation.
 
 This script does NOT use any external framework (no Flask, no Django).
@@ -20,7 +20,7 @@ import threading
 import webbrowser
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-HOST = "127.0.0.1"
+HOST = "0.0.0.0"
 PORT = 8000
 
 # ---------------------------------------------------------------------------
@@ -31,7 +31,7 @@ PAGE_HTML = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payroll System — Sign In</title>
+<title>Payroll System â€” Sign In</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -449,7 +449,7 @@ PAGE_HTML = r"""<!DOCTYPE html>
           </div>
           <div class="field">
             <label for="loginPassword">Password</label>
-            <input type="password" id="loginPassword" placeholder="••••••••">
+            <input type="password" id="loginPassword" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
           </div>
 
           <button class="submit-btn" onclick="handleLogin()">Log in</button>
@@ -480,7 +480,7 @@ PAGE_HTML = r"""<!DOCTYPE html>
           <div class="field">
             <label for="regRole">Role</label>
             <select id="regRole">
-              <option value="">Select a role…</option>
+              <option value="">Select a roleâ€¦</option>
               <option value="Employee">Employee</option>
               <option value="Administrator / HR">Administrator / HR</option>
               <option value="Finance / Accounts">Finance / Accounts</option>
@@ -497,9 +497,9 @@ PAGE_HTML = r"""<!DOCTYPE html>
 
 <!-- DASHBOARD REDIRECT STUB -->
 <div class="dash" id="dashScreen">
-  <div class="stamp">✓</div>
+  <div class="stamp">âœ“</div>
   <h1>Welcome, <span id="dashName">there</span></h1>
-  <p>You're signed in to the Payroll System dashboard. This is a placeholder screen — Modules 2 and 3 will build out Employee Management, Attendance, Leave, and Payroll Processing here.</p>
+  <p>You're signed in to the Payroll System dashboard. This is a placeholder screen â€” Modules 2 and 3 will build out Employee Management, Attendance, Leave, and Payroll Processing here.</p>
   <div class="role-chip" id="dashRole">ROLE</div>
   <button class="signout" onclick="signOut()">Sign out</button>
 </div>
@@ -558,7 +558,7 @@ PAGE_HTML = r"""<!DOCTYPE html>
 
     accounts.push({ name, email, password, role });
     updateCounter();
-    showMsg('registerMsg', 'Account created. Signing you in…', 'success');
+    showMsg('registerMsg', 'Account created. Signing you inâ€¦', 'success');
 
     setTimeout(() => goToDashboard({ name, role }), 700);
   }
@@ -574,7 +574,7 @@ PAGE_HTML = r"""<!DOCTYPE html>
       return;
     }
 
-    showMsg('loginMsg', 'Welcome back. Redirecting…', 'success');
+    showMsg('loginMsg', 'Welcome back. Redirectingâ€¦', 'success');
     setTimeout(() => goToDashboard(account), 500);
   }
 
@@ -616,7 +616,7 @@ class PayrollAuthHandler(BaseHTTPRequestHandler):
 
 
 def open_browser():
-    """Launches the default browser to the running page automatically —
+    """Launches the default browser to the running page automatically â€”
     no need to manually type the address anywhere."""
     webbrowser.open(f"http://{HOST}:{PORT}")
 
@@ -629,14 +629,14 @@ def run():
     print("Press Ctrl+C in this terminal to stop the server.")
 
     # Give the server a moment to start, then open the page by itself.
-    threading.Timer(0.6, open_browser).start()
 
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\nShutting down…")
+        print("\nShutting downâ€¦")
         server.server_close()
 
 
 if __name__ == "__main__":
     run()
+
